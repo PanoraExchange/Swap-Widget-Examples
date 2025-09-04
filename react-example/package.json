@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@panoraexchange/widget-sdk": "^1.0.9",
+    "@panoraexchange/widget-sdk": "^1.1.1",
+    "@telegram-apps/bridge": "^2.11.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -11,6 +12,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@wallet-standard/core": "^1.1.1",
     "crypto-browserify": "^3.12.0",
     "dotenv": "^16.4.5",
     "process": "^0.11.10",

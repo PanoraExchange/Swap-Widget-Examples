@@ -10,11 +10,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@panoraexchange/widget-sdk": "^1.0.9",
+    "@panoraexchange/widget-sdk": "^1.1.1",
     "next": "14.1.4",
     "react": "^18",
     "react-dom": "^18",
-    "yarn": "^1.22.22"
+    "yarn": "^1.22.22",
+    "@telegram-apps/bridge": "^2.11.0",
+    "@wallet-standard/core": "^1.1.1"
   },
   "devDependencies": {
     "@types/node": "^20",
