@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <!-- Load the Panora Widget script in your <head> -->
+    <script src="https://app.panora.exchange/widget-v1.js"></script>
+  </head>
+  <body>
+    <!-- Prepare a container in your <body> for the Panora Widget -->
+    <!-- Adjust width and height to suit your layout -->
+    <div id="panora-widget" style="width: 400px; height: 568px"></div>
+
+    <!-- Initialize the widget in your <body> after the container -->
+    <script>
+      window.Panora.init({
+        integratedTargetId: "panora-widget",
+        independentWalletConnection: true,
+        displayMode: "INTEGRATED",
+      });
+    </script>
+  </body>
+</html>

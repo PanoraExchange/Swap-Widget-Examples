@@ -6,3 +6,4 @@ const Widget = dynamic(() => import("../components/Widget"), {
 export default function Home() {
   return <Widget />;
 }
+
