@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panora Widget SDK — HTML Example</title>
+  <script src="https://assets.panora.exchange/widget-v1.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      font-family: system-ui, sans-serif;
+      color: #fff;
+      gap: 1.5rem;
+    }
+    h1 { margin-bottom: 0.5rem; }
+    .tabs { display: flex; gap: 0.5rem; }
+    .tab-btn {
+      padding: 8px 20px; border-radius: 8px; border: 2px solid #333;
+      background: #1a1a1a; color: #888; cursor: pointer; font-weight: 600; font-size: 14px;
+    }
+    .tab-btn.active { border-color: #5fdfac; background: rgba(95,223,172,0.125); color: #5fdfac; }
+    .hint { color: #888; font-size: 13px; text-align: center; }
+    .btn-row { display: flex; gap: 0.75rem; }
+    .btn-open {
+      padding: 12px 32px; border-radius: 12px; border: 2px solid #5fdfac;
+      background: rgba(95,223,172,0.125); color: #5fdfac; cursor: pointer; font-weight: 700; font-size: 16px;
+    }
+    .btn-close {
+      padding: 12px 32px; border-radius: 12px; border: 2px solid #ff4d4d;
+      background: rgba(255,77,77,0.125); color: #ff4d4d; cursor: pointer; font-weight: 700; font-size: 16px;
+    }
+    .mode-content { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Panora Widget SDK — HTML Example</h1>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="INTEGRATED" onclick="switchTab('INTEGRATED')">INTEGRATED</button>
+    <button class="tab-btn" data-tab="WIDGET" onclick="switchTab('WIDGET')">WIDGET</button>
+    <button class="tab-btn" data-tab="MODAL" onclick="switchTab('MODAL')">MODAL</button>
+  </div>
+
+  <!-- INTEGRATED — renders inline inside a target element -->
+  <div id="tab-INTEGRATED">
+    <p class="hint">Renders inline inside a target element</p>
+    <div id="panora-widget-container" style="margin-top: 0.75rem;"></div>
+  </div>
+
+  <!-- WIDGET — floating button -->
+  <div id="tab-WIDGET" class="hidden">
+    <p class="hint">Floating button at bottom-right corner — click it to open</p>
+  </div>
+
+  <!-- MODAL — open / close on demand -->
+  <div id="tab-MODAL" class="hidden mode-content">
+    <p class="hint">Open / close the modal with the buttons below</p>
+    <div class="btn-row">
+      <button class="btn-open" onclick="openModal()">Open Swap Modal</button>
+      <button class="btn-close" onclick="closeWidget()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    var currentTab = "INTEGRATED";
+
+    // Replace with your own API key, or omit to use the default public key
+    var API_KEY = "";
+
+    var DEFAULT_FROM = "0xa"; // APT
+    var DEFAULT_TO = "0x357b0b74bc833e95a115ad22604854d6b0fca151cecd94111770e5d6ffc9dc2b"; // USDt
+
+    function switchTab(tab) {
+      closeWidget();
+      currentTab = tab;
+
+      document.querySelectorAll(".tab-btn").forEach(function (btn) {
+        btn.classList.toggle("active", btn.dataset.tab === tab);
+      });
+
+      ["INTEGRATED", "WIDGET", "MODAL"].forEach(function (t) {
+        var el = document.getElementById("tab-" + t);
+        if (el) el.classList.toggle("hidden", t !== tab);
+      });
+
+      if (tab === "MODAL") return;
+
+      setTimeout(function () {
+        if (!window.PanoraWidget) return;
+
+        if (tab === "INTEGRATED") {
+          window.PanoraWidget.render("#panora-widget-container", {
+            panoraApiKey: API_KEY,
+            displayMode: "INTEGRATED",
+            defaultFromTokenAddress: DEFAULT_FROM,
+            defaultToTokenAddress: DEFAULT_TO,
+            locale: "en",
+            showNotifications: true,
+          });
+        } else if (tab === "WIDGET") {
+          var root = document.getElementById("panora-widget-root");
+          if (!root) {
+            root = document.createElement("div");
+            root.id = "panora-widget-root";
+            document.body.appendChild(root);
+          }
+          window.PanoraWidget.render(root, {
+            panoraApiKey: API_KEY,
+            displayMode: "WIDGET",
+            defaultFromTokenAddress: DEFAULT_FROM,
+            defaultToTokenAddress: DEFAULT_TO,
+            locale: "en",
+            widgetBtnDirection: "right-bottom",
+          });
+        }
+      }, 100);
+    }
+
+    function openModal() {
+      if (!window.PanoraWidget) return;
+      var root = document.getElementById("panora-widget-root");
+      if (!root) {
+        root = document.createElement("div");
+        root.id = "panora-widget-root";
+        document.body.appendChild(root);
+      }
+      window.PanoraWidget.render(root, {
+        panoraApiKey: API_KEY,
+        displayMode: "MODAL",
+        defaultFromTokenAddress: DEFAULT_FROM,
+        defaultToTokenAddress: DEFAULT_TO,
+        locale: "en",
+      });
+    }
+
+    function closeWidget() {
+      var container = document.getElementById("panora-widget-container");
+      if (container) container.innerHTML = "";
+      var root = document.getElementById("panora-widget-root");
+      if (root) root.innerHTML = "";
+    }
+
+    window.addEventListener("load", function () {
+      switchTab("INTEGRATED");
+    });
+  </script>
+</body>
+</html>
